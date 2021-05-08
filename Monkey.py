@@ -4,11 +4,24 @@ import pywhatkit
 import datetime
 import wikipedia
 import pyjokes
+import PyPDF2
 
 listener = sr.Recognizer()
 engine = pyttsx3.init()
 voices = engine.getProperty('voices')
 engine.setProperty('voice', voices[0].id)
+
+def PyAudioBook():
+    book = open('oop.pdf', 'rb')
+    pdfReader = PyPDF2.PdfFileReader(book)
+    pages = pdfReader.numPages
+    print(pages)
+    speaker = pyttsx3.init()
+    for num in range(7, pages):
+        page = pdfReader.getPage(7)
+        text = page.extractText()
+        speaker.say(text)
+        speaker.runAndWait()
 
 def talk(text):
     engine.say(text)
@@ -37,33 +50,61 @@ def run_monkey():
         talk('playing' + song)
         print(song)
         pywhatkit.playonyt(song)
-        run_monkey()
 
     elif 'time' in command:
         time = datetime.datetime.now().strftime('%I: %M %p')
         talk('it is' + time)
         print(time)
-        run_monkey()
-        #if time[] == ''
 
     elif 'who is' in command:
         wiki = command.replace('who is', '')
         info = wikipedia.summary(wiki, 1)
         talk(info)
         print(info)
-        run_monkey()
 
     elif 'joke' in command:
         joke = pyjokes.get_joke()
         talk(joke)
         print(joke)
-        run_monkey()
 
     elif 'go to sleep' in command:
         talk('okay see you later')
 
+    elif 'bangla song' in command:
+        song = 'bangla song'
+        talk('playing' + song)
+        print(song)
+        pywhatkit.playonyt(song)
+
+    elif 'good morning' in command:
+        talk('good morning hasib')
+
+
+    elif 'good evening' in command:
+        talk('good evening hasib')
+
+
+    elif 'good night' in command:
+        talk('good night hasib')
+
+    elif 'good afternoon' in command:
+        talk('good night hasib')
+
+    elif 'how are you' in command:
+        talk('I am doing good. Thank you')
+
+    elif 'your name' in command:
+        talk('my name is Monkey')
+
+    elif 'change your voice' in command:
+        engine.setProperty('voice', voices[1].id)
+        talk('Sure')
+
+    elif 'read book' in command:
+        PyAudioBook()
+
     else:
         talk('could you please repeat that?')
-        run_monkey()
 
-run_monkey()
+while True:
+    run_monkey()
